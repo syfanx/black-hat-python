@@ -62,3 +62,27 @@ except getopt.GetoptError as err:
             command = True
         elif o in ("-u", "--upload"):
             upload_destination = a
+        elif o in ("-t", "--target"):
+            target = a
+        elif o in ("-p", "--port"):
+            port = int(a)
+        else:
+            assert False,"Unhandled Option"
+ 
+    # 
+    if not listen and len(target) and port > 0: 
+ 
+        # read in the buffer from the commandline
+        # this will block, so send CTRL-D if not sending input
+        # to stdin
+        buffer = sys.stdin.read()
+ 
+        # send data off
+        client_sender(buffer) 
+ 
+    # listen, upload things, execute commands, and drop a shell back
+    # depending on the command line options above
+    if listen:
+        server_loop() 
+main() 
+        
